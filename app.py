@@ -42,4 +42,5 @@ async def 검색(ctx: discord.Message):
 
     ctx.send(champion_str)
 
-bot.run(token)
+if __name__ == "__main__":
+    bot.run(token)
