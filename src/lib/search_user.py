@@ -17,12 +17,12 @@ def get_recent_kda(userid, game_count):
     bs_obj = bs(html, 'html.parser')
 
     kda = []
-    game_kda = ['0','/','0','/','0']
 
     kdas = bs_obj.select('div.GameItemWrap div.KDA div.KDA')
     for i in range(int(game_count)):
+        game_kda = ''
         for j in range(5):
-            game_kda[j] = (kdas[i].text.split()[j])
+            game_kda += (''.join(kdas[i].text.split()[j]))
         kda.append(game_kda)
     return kda
 
@@ -135,3 +135,5 @@ def get_top_rank(userid):
         top_rank += i + ' '
 
     return top_rank.replace('Ladder Rank', '래더 랭킹').replace('(', '위 ( 상위 ').replace('of top', '')
+
+print(get_recent_kda('ios6', 5))
