@@ -58,16 +58,16 @@ def get_tier(userid):
     summoner_solorank_tier = bs_obj.find('div', 'SummonerRatingMedium')
     solo_tierRank = summoner_solorank_tier.find('div', 'TierRank').text
     #solo_lp = summoner_solorank_tier.find('span', 'LeaguePoints').text.replace('\t', '').replace('\n','')
-    solo_tier = solo_tierRank, #solo_lp
 
     summoner_freerank_tier = bs_obj.find('div', 'sub-tier')
-    free_tierRank = summoner_freerank_tier.find('div', 'sub-tier__rank-tier').text
+    free_tierRank = summoner_freerank_tier.find('div', 'sub-tier__rank-tier').text.replace('\t', '').replace('\n', '').split()
     #free_lp = summoner_solorank_tier.find('div', 'sub-tier__league-point').text.replace('\t', '').replace('\n','')
-    free_tier = free_tierRank, #free_lp
+    free_tier = free_tierRank[0] + ' ' + free_tierRank[1]
 
-    tier_img = bs_obj.find('div', 'SummonerRatingMedium').find('img')['src']
+    solo_tier_img = bs_obj.find('div', 'SummonerRatingMedium').find('img')['src']
+    free_tier_img = bs_obj.find('div', 'sub-tier').find('img')['src']
 
-    return [solo_tier, free_tier, tier_img]
+    return [solo_tierRank, free_tier, solo_tier_img, free_tier_img]
 
 def get_recent_rating(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
@@ -123,3 +123,15 @@ def get_user_name(userid):
 
     summoner_id = bs_obj.find('div', 'Profile').find('span', 'Name').text
     return summoner_id
+
+def get_top_rank(userid):
+    url = "https://www.op.gg/summoner/userName="+userid
+    html = urlopen(url)
+    bs_obj = bs(html, 'html.parser')
+
+    rank = bs_obj.find('div', 'Profile').find('div', 'LadderRank').find('a')
+    top_rank = ''
+    for i in rank.text.split():
+        top_rank += i + ' '
+
+    return top_rank
