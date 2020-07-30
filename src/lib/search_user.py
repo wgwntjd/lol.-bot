@@ -7,8 +7,7 @@ def get_user_level(userid):
     bs_obj = bs(html, 'html.parser')
     
     profile = bs_obj.findAll('div', 'ProfileIcon')
-    print(profile)
-    user_level = profile.find('span', 'Level tip tpd-delegation-uid-1').text
+    user_level = profile[0].find('span').text
 
     return user_level
 
@@ -76,7 +75,6 @@ def get_recent_rating(userid, game_count):
     bs_obj = bs(html, 'html.parser')
 
     game_ratings = []
-    rate = ''
     game_stat = bs_obj.findAll('div','GameItemWrap')
     for i in range(game_count):
         game_ratings.append(game_stat[i].find('div', 'KDARatio').find('span', 'KDARatio').text)
@@ -117,3 +115,11 @@ def get_user_icon(userid):
 
     profile_icon = bs_obj.find('div', 'ProfileIcon').find('img')['src']
     return profile_icon
+
+def get_user_name(userid):
+    url = "https://www.op.gg/summoner/userName="+userid
+    html = urlopen(url)
+    bs_obj = bs(html, 'html.parser')
+
+    summoner_id = bs_obj.find('div', 'Profile').find('span', 'Name').text
+    return summoner_id
