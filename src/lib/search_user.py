@@ -6,10 +6,11 @@ def get_user_level(userid):
     html = urlopen(url)
     bs_obj = bs(html, 'html.parser')
     
-    profile = bs_obj.find('div','ProfileIcon')
+    profile = bs_obj.findAll('div', 'ProfileIcon')
+    print(profile)
     user_level = profile.find('span', 'Level tip tpd-delegation-uid-1').text
 
-    return [user_level]
+    return user_level
 
 def get_recent_kda(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
