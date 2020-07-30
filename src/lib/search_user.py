@@ -9,7 +9,7 @@ def get_user_level(userid):
     profile = bs_obj.find('div','ProfileIcon')
     user_level = profile.find('span', 'Level tip tpd-delegation-uid-1').text
 
-    return user_level
+    return [user_level]
 
 def get_recent_kda(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
@@ -23,7 +23,7 @@ def get_recent_kda(userid, game_count):
         for j in range(5):
             kda += kdas[i].text.split()[j]
         kda += '\n'
-    return kda
+    return [kda]
 
 def get_recent_types(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
@@ -35,7 +35,7 @@ def get_recent_types(userid, game_count):
     for i in range(game_count):
         game_types += game_stat[i].find('div', 'GameType').text.split()[0] + '\n'
 
-    return game_types
+    return [game_types]
 
 def get_recent_result(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
@@ -47,7 +47,7 @@ def get_recent_result(userid, game_count):
     for i in range(game_count):
         game_results += game_stat[i].find('div', 'GameResult').text.split()[0] + '\n'
 
-    return game_results
+    return [game_results]
 
 def get_tier(userid):
     url = "https://www.op.gg/summoner/userName="+userid
@@ -64,7 +64,7 @@ def get_tier(userid):
     #free_lp = summoner_solorank_tier.find('div', 'sub-tier__league-point').text.replace('\t', '').replace('\n','')
     free_tier = free_tierRank, #free_lp
 
-    return solo_tier, free_tier
+    return [solo_tier, free_tier]
 
 def get_recent_rating(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
@@ -76,7 +76,7 @@ def get_recent_rating(userid, game_count):
     for i in range(game_count):
         game_ratings += game_stat[i].find('div', 'KDARatio').find('span', 'KDARatio').text + '\n'
 
-    return game_ratings
+    return [game_ratings]
 
 def get_recent_champion(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
@@ -87,7 +87,7 @@ def get_recent_champion(userid, game_count):
     game_stat = bs_obj.findAll('div','GameItemWrap')
     for i in range(game_count):
         champions += game_stat[i].find('div', 'ChampionName').find('a').text + '\n'
-    return champions
+    return [champions]
     
 def get_average_stats(userid):
     url = "https://www.op.gg/summoner/userName="+userid
