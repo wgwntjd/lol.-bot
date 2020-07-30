@@ -134,4 +134,4 @@ def get_top_rank(userid):
     for i in rank.text.split():
         top_rank += i + ' '
 
-    return top_rank
+    return top_rank.replace('Ladder Rank', '래더 랭킹').replace('(', '( 상위').replace('of top', '')
