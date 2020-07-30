@@ -17,11 +17,13 @@ def get_recent_kda(userid, game_count):
     bs_obj = bs(html, 'html.parser')
 
     kda = []
+    game_kda = ['0','/','0','/','0']
 
     kdas = bs_obj.select('div.GameItemWrap div.KDA div.KDA')
     for i in range(int(game_count)):
         for j in range(5):
-            kda.append(kdas[i].text.split()[j])
+            game_kda[j] = (kdas[i].text.split()[j])
+        kda.append(game_kda)
     return kda
 
 def get_recent_types(userid, game_count):
