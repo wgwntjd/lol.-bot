@@ -27,20 +27,32 @@ async def 살인(ctx):
 
 
 @bot.command()
-async def 검색(ctx: discord.Message):
-    nickname = ctx.content.split()[2]
+async def 검색(ctx, arg):
+    nickname = arg.split()[0]
+    try:
+        list_length = arg.split()[1]
+    except:
+        list_length = 5
     print(nickname)
+
     url = 'https://www.op.gg/summoner/userName=' + nickname
     html = urlopen(url)
     bs_obj = bs(html, 'html.parser')
-    champion_str = ''
+    profile_str = ''
 
-    game_item_list = bs_obj.find(
-        "div", {"class": "GameItemList"}).findAll("div", {"class": "ChampionName"})
-    for i in range(5):
-        champion_str += game_item_list[i].text + "\n"
+    game_list = bs_obj.find("div", {"class": "GameItemList"})
+    game_champ_list = game_list.findAll("div", {"class": "ChampionName"})
+    game_KDA_list = game_list.select('div.KDA > div.KDA')
 
-    ctx.send(champion_str)
+    for i in range(list_length):
+        game_KDA = ''
+        for j in game_KDA_list[i].text.split():
+            game_KDA += j + " "
+        print(game_KDA)
+        profile_str += game_champ_list[i].text[:-1] + '\t' + game_KDA + "\n"
+
+    print(profile_str)
+    await ctx.send(profile_str)
 
 if __name__ == "__main__":
-    bot.run(token)
+    bot.run(token, bot=True, reconnect=True)
