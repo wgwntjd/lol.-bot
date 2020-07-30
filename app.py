@@ -1,6 +1,7 @@
 import asyncio
 import discord
 import os
+import urllib
 from urllib.request import urlopen
 from bs4 import BeautifulSoup as bs
 from discord.ext import commands
@@ -28,12 +29,12 @@ async def 살인(ctx):
 
 @bot.command()
 async def 검색(ctx, arg):
-    nickname = arg.split()[0]
+    nickname = urllib.parse.quote(arg.split(':')[0])
     try:
-        list_length = arg.split()[1]
+        list_length = int(arg.split(':')[1])
     except:
         list_length = 5
-    print(nickname)
+    print(nickname, "   ", list_length)
 
     url = 'https://www.op.gg/summoner/userName=' + nickname
     html = urlopen(url)
