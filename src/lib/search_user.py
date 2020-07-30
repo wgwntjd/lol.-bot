@@ -16,38 +16,37 @@ def get_recent_kda(userid, game_count):
     html = urlopen(url)
     bs_obj = bs(html, 'html.parser')
 
-    kda = ''
+    kda = []
 
     kdas = bs_obj.select('div.GameItemWrap div.KDA div.KDA')
     for i in range(int(game_count)):
         for j in range(5):
-            kda += kdas[i].text.split()[j]
-        kda += '\n'
-    return [kda]
+            kda.append(kdas[i].text.split()[j])
+    return kda
 
 def get_recent_types(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
     html = urlopen(url)
     bs_obj = bs(html, 'html.parser')
 
-    game_types = ''
+    game_types = []
     game_stat = bs_obj.findAll('div','GameItemWrap')
     for i in range(game_count):
-        game_types += game_stat[i].find('div', 'GameType').text.split()[0] + '\n'
+        game_types.append(game_stat[i].find('div', 'GameType').text.split()[0])
 
-    return [game_types]
+    return game_types
 
 def get_recent_result(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
     html = urlopen(url)
     bs_obj = bs(html, 'html.parser')
 
-    game_results = ''
+    game_results = []
     game_stat = bs_obj.findAll('div','GameItemWrap')
     for i in range(game_count):
-        game_results += game_stat[i].find('div', 'GameResult').text.split()[0] + '\n'
+        game_results.append(game_stat[i].find('div', 'GameResult').text.split()[0])
 
-    return [game_results]
+    return game_results
 
 def get_tier(userid):
     url = "https://www.op.gg/summoner/userName="+userid
@@ -64,30 +63,33 @@ def get_tier(userid):
     #free_lp = summoner_solorank_tier.find('div', 'sub-tier__league-point').text.replace('\t', '').replace('\n','')
     free_tier = free_tierRank, #free_lp
 
-    return [solo_tier, free_tier]
+    tier_img = bs_obj.find('div', 'SummonerRatingMedium').find('img')['src']
+
+    return [solo_tier, free_tier, tier_img]
 
 def get_recent_rating(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
     html = urlopen(url)
     bs_obj = bs(html, 'html.parser')
 
-    game_ratings = ''
+    game_ratings = []
+    rate = ''
     game_stat = bs_obj.findAll('div','GameItemWrap')
     for i in range(game_count):
-        game_ratings += game_stat[i].find('div', 'KDARatio').find('span', 'KDARatio').text + '\n'
+        game_ratings.append(game_stat[i].find('div', 'KDARatio').find('span', 'KDARatio').text)
 
-    return [game_ratings]
+    return game_ratings
 
 def get_recent_champion(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
     html = urlopen(url)
     bs_obj = bs(html, 'html.parser')
 
-    champions = ''
+    champions = []
     game_stat = bs_obj.findAll('div','GameItemWrap')
     for i in range(game_count):
-        champions += game_stat[i].find('div', 'ChampionName').find('a').text + '\n'
-    return [champions]
+        champions.append('https:' + game_stat[i].find('div', 'ChampionImage').find('img')['src'])
+    return champions
     
 def get_average_stats(userid):
     url = "https://www.op.gg/summoner/userName="+userid
@@ -104,3 +106,12 @@ def get_average_stats(userid):
     recent_rate = game_rate.find('div', "Text").text
 
     return [game_total, recent_win, recent_lose, recent_rate]
+
+print(get_average_stats('ios6'))
+print(get_recent_champion('ios6', 5))
+print(get_recent_kda('ios6', 5))
+print(get_recent_rating('ios6', 5))
+print(get_recent_result('ios6', 5))
+print(get_recent_types('ios6', 5))
+print(get_tier('ios6'))
+print(get_user_level('ios6'))
