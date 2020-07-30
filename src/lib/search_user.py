@@ -1,6 +1,16 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup as bs
 
+def get_user_level(userid):
+    url = "https://www.op.gg/summoner/userName="+userid
+    html = urlopen(url)
+    bs_obj = bs(html, 'html.parser')
+    
+    profile = bs_obj.find('div','ProfileIcon')
+    user_level = profile.find('span', 'Level tip tpd-delegation-uid-1').text
+
+    return user_level
+
 def get_recent_kda(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
     html = urlopen(url)
@@ -45,10 +55,16 @@ def get_tier(userid):
     bs_obj = bs(html, 'html.parser')
 
     summoner_solorank_tier = bs_obj.find('div', 'SummonerRatingMedium')
-    tierRank = summoner_solorank_tier.find('div', 'TierRank').text
-    lp = summoner_solorank_tier.find('span', 'LeaguePoints').text.replace('\t', '').replace('\n','')
-    tier = tierRank, lp
-    return tier
+    solo_tierRank = summoner_solorank_tier.find('div', 'TierRank').text
+    #solo_lp = summoner_solorank_tier.find('span', 'LeaguePoints').text.replace('\t', '').replace('\n','')
+    solo_tier = solo_tierRank, #solo_lp
+
+    summoner_freerank_tier = bs_obj.find('div', 'sub-tier')
+    free_tierRank = summoner_freerank_tier.find('div', 'sub-tier__rank-tier').text
+    #free_lp = summoner_solorank_tier.find('div', 'sub-tier__league-point').text.replace('\t', '').replace('\n','')
+    free_tier = free_tierRank, #free_lp
+
+    return solo_tier, free_tier
 
 def get_recent_rating(userid, game_count):
     url = "https://www.op.gg/summoner/userName="+userid
