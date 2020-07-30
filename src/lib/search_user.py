@@ -110,11 +110,10 @@ def get_average_stats(userid):
 
     return [game_total, recent_win, recent_lose, recent_rate]
 
-print(get_average_stats('ios6'))
-print(get_recent_champion('ios6', 5))
-print(get_recent_kda('ios6', 5))
-print(get_recent_rating('ios6', 5))
-print(get_recent_result('ios6', 5))
-print(get_recent_types('ios6', 5))
-print(get_tier('ios6'))
-print(get_user_level('ios6'))
+def get_user_icon(userid):
+    url = "https://www.op.gg/summoner/userName="+userid
+    html = urlopen(url)
+    bs_obj = bs(html, 'html.parser')
+
+    profile_icon = bs_obj.find('div', 'ProfileIcon').find('img')['src']
+    return profile_icon
