@@ -89,7 +89,7 @@ def get_recent_champion(userid, game_count):
     champions = []
     game_stat = bs_obj.findAll('div','GameItemWrap')
     for i in range(game_count):
-        champions.append('https:' + game_stat[i].find('div', 'ChampionImage').find('img')['src'])
+        champions.append(game_stat[i].find('div', 'ChampionName').find('a').text)
     return champions
     
 def get_average_stats(userid):
@@ -135,3 +135,5 @@ def get_top_rank(userid):
         top_rank += i + ' '
 
     return top_rank.replace('Ladder Rank', '래더 랭킹').replace('(', '위 ( 상위 ').replace('of top', '')
+
+print(get_recent_champion('ios6', 5))
