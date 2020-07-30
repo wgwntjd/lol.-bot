@@ -135,5 +135,3 @@ def get_top_rank(userid):
         top_rank += i + ' '
 
     return top_rank.replace('Ladder Rank', '래더 랭킹').replace('(', '위 ( 상위 ').replace('of top', '')
-
-print(get_recent_champion('ios6', 5))
